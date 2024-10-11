@@ -159,6 +159,8 @@ runs:
       run: |
         clang-tidy --version
         lsb_release -a
+        gcc --version
+        g++ --version
       shell: bash
 
     - name: Mark the workflow as failed if clang-tidy find an error
