@@ -101,6 +101,7 @@ runs:
         colcon build --event-handlers console_cohesion+ \
           --packages-up-to ${{ inputs.target-packages }} \
           --cmake-args -DCMAKE_BUILD_TYPE=${{ inputs.cmake-build-type }} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        printenv
       shell: bash
 
     - name: Retrieve .clang-tidy
@@ -130,6 +131,9 @@ runs:
         echo "${{ github.event.number }}" > /tmp/clang-tidy-result/pr-id.txt
         echo "${{ github.event.pull_request.head.repo.full_name }}" > /tmp/clang-tidy-result/pr-head-repo.txt
         echo "${{ github.event.pull_request.head.ref }}" > /tmp/clang-tidy-result/pr-head-ref.txt
+        clang-tidy --version
+        lsb_release -a
+        printenv
       shell: bash
 
     - name: Check if the report.txt file exists
@@ -155,7 +159,6 @@ runs:
       run: |
         clang-tidy --version
         lsb_release -a
-        printenv
       shell: bash
 
     - name: Mark the workflow as failed if clang-tidy find an error
