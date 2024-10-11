@@ -1,4 +1,4 @@
-name: clang-tidy
+name: clang-tidy-test
 description: ""
 
 inputs:
@@ -58,6 +58,8 @@ runs:
       run: |
         sudo apt-get -yqq update
         sudo apt-get -yqq install clang-tidy libomp-dev
+        clang-tidy --version
+        lsb_release -a
       shell: bash
 
     - name: Set git config
