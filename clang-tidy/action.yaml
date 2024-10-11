@@ -127,7 +127,7 @@ runs:
     - name: Analyze
       if: ${{ steps.get-target-files.outputs.target-files != '' }}
       run: |
-      . /opt/ros/${{ inputs.rosdistro }}/setup.sh
+        . /opt/ros/${{ inputs.rosdistro }}/setup.sh
         mkdir /tmp/clang-tidy-result
         clang-tidy -p build/ -export-fixes /tmp/clang-tidy-result/fixes.yaml ${{ steps.get-target-files.outputs.target-files }} > /tmp/clang-tidy-result/report.txt || true
         echo "${{ github.event.number }}" > /tmp/clang-tidy-result/pr-id.txt
