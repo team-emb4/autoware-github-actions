@@ -102,7 +102,6 @@ runs:
           --packages-up-to ${{ inputs.target-packages }} \
           --cmake-args -DCMAKE_BUILD_TYPE=${{ inputs.cmake-build-type }} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         printenv
-        cat build/map_loader/compile_commands.json || echo "compile_commands.json not found"
       shell: bash
 
     - name: Retrieve .clang-tidy
@@ -127,14 +126,11 @@ runs:
     - name: Analyze
       if: ${{ steps.get-target-files.outputs.target-files != '' }}
       run: |
-        . /opt/ros/${{ inputs.rosdistro }}/setup.sh
         mkdir /tmp/clang-tidy-result
         clang-tidy -p build/ -export-fixes /tmp/clang-tidy-result/fixes.yaml ${{ steps.get-target-files.outputs.target-files }} > /tmp/clang-tidy-result/report.txt || true
         echo "${{ github.event.number }}" > /tmp/clang-tidy-result/pr-id.txt
         echo "${{ github.event.pull_request.head.repo.full_name }}" > /tmp/clang-tidy-result/pr-head-repo.txt
         echo "${{ github.event.pull_request.head.ref }}" > /tmp/clang-tidy-result/pr-head-ref.txt
-        clang-tidy --version
-        lsb_release -a
         printenv
       shell: bash
 
@@ -155,7 +151,9 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: clang-tidy-result
-        path: /tmp/clang-tidy-result/
+        path: |
+            /tmp/clang-tidy-result/
+            build/${{ inputs.target-packages }}/compile_commands.json
 
     - name: Check version and OS
       run: |
