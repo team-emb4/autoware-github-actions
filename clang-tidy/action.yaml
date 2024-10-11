@@ -58,8 +58,6 @@ runs:
       run: |
         sudo apt-get -yqq update
         sudo apt-get -yqq install clang-tidy libomp-dev
-        clang-tidy --version
-        lsb_release -a
       shell: bash
 
     - name: Set git config
@@ -152,6 +150,13 @@ runs:
       with:
         name: clang-tidy-result
         path: /tmp/clang-tidy-result/
+
+    - name: Check version and OS
+      run: |
+        clang-tidy --version
+        lsb_release -a
+        printenv
+      shell: bash
 
     - name: Mark the workflow as failed if clang-tidy find an error
       if: ${{ steps.check-report-txt-existence.outputs.exists == 'true' }}
