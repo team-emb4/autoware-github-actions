@@ -102,6 +102,7 @@ runs:
           --packages-up-to ${{ inputs.target-packages }} \
           --cmake-args -DCMAKE_BUILD_TYPE=${{ inputs.cmake-build-type }} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         printenv
+        cat build/map_loader/compile_commands.json || echo "compile_commands.json not found"
       shell: bash
 
     - name: Retrieve .clang-tidy
@@ -126,6 +127,7 @@ runs:
     - name: Analyze
       if: ${{ steps.get-target-files.outputs.target-files != '' }}
       run: |
+      . /opt/ros/${{ inputs.rosdistro }}/setup.sh
         mkdir /tmp/clang-tidy-result
         clang-tidy -p build/ -export-fixes /tmp/clang-tidy-result/fixes.yaml ${{ steps.get-target-files.outputs.target-files }} > /tmp/clang-tidy-result/report.txt || true
         echo "${{ github.event.number }}" > /tmp/clang-tidy-result/pr-id.txt
