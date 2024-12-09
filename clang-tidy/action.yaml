@@ -141,8 +141,8 @@ runs:
         mkdir /tmp/clang-tidy-result
         set +e
         run-clang-tidy -p build/ -export-fixes /tmp/clang-tidy-result/fixes.yaml -j $(nproc) ${{ steps.get-target-files.outputs.target-files }} > /tmp/clang-tidy-result/report.log
-        set -e
         exit_code=$?
+        set -e
         echo "exit-code=$exit_code"
         echo "${{ github.event.number }}" > /tmp/clang-tidy-result/pr-id.txt
         echo "${{ github.event.pull_request.head.repo.full_name }}" > /tmp/clang-tidy-result/pr-head-repo.txt
