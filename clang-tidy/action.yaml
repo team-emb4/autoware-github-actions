@@ -149,7 +149,7 @@ runs:
       id: check-report-txt-existence
       uses: autowarefoundation/autoware-github-actions/check-file-existence@v1
       with:
-        files: /tmp/clang-tidy-result/report.txt
+        files: /tmp/clang-tidy-result/report.log
 
     - name: Check if the fixes.yaml file exists
       id: check-fixes-yaml-existence
