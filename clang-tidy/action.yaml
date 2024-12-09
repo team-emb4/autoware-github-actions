@@ -176,7 +176,7 @@ runs:
     - name: Mark the workflow as failed if clang-tidy find an error
       if: ${{ steps.check-report-txt-existence.outputs.exists == 'true' }}
       run: |
-        if [ -n "$(grep ": error:" /tmp/clang-tidy-result/report.txt)" ]; then
+        if [ -n "$(grep "31merror:" /tmp/clang-tidy-result/report.txt)" ]; then
           exit 1
         fi
       shell: bash
